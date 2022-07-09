@@ -23,22 +23,18 @@ app.get("/", (req, res) => {
   };
   let day = today.toLocaleDateString("en-US", options); //get date's day as number 0-6 (0=Sun)
 
-  res.render("list", {listTitle: day, newListItems: items}) //6. "ejs view engine" response.render to .ejs HTML file, "views/list.ejs"
+  res.render("list", {listTitle: day, newListItems: items, route: "/"}) //6. "ejs view engine" response.render to .ejs HTML file, "views/list.ejs"
 });
 app.post("/", (req, res) => { // 7.retrieve input items from list.ejs
   let item = req.body.newItem; //"var item" only exists in post route scope. Should declare var as empty string above
-  if (req.body.list === "Work") { //12. push any posts that come from "Work" page into workItems[] array and not items[] 
-    workItems.push(item);
-  } else {
-    items.push(item); //array.push()
-    res.redirect("/"); //8. redirect this post item back to the home page, allowing it to be picked up by the res.render in the app.get above
-  }
+  items.push(item); //array.push()
+  res.redirect("/"); //8. redirect this post item back to the home page, allowing it to be picked up by the res.render in the app.get above
 
 });
 
 // 11. Add new "/WORK" page. Format just like home page.
 app.get("/work", (req, res) => {
-  res.render("list", {listTitle: "Work List", newListItems: workItems});
+  res.render("list", {listTitle: "Work List", newListItems: workItems, route: "/work"});
 });
 app.post("/work", (req, res) => {
   let item = req.body.newItem;
